@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus AI Hub — Interactive Wireframe</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f4f6fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f7;
+    --surface3: #e4e8f2;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.14);
+    --text: #1a1f36;
+    --text2: #4f566b;
+    --text3: #8c93a8;
+    --accent: #3b6ef5;
+    --accent-dim: rgba(59,110,245,0.1);
+    --red: #d93a3a;
+    --red-dim: rgba(217,58,58,0.09);
+    --amber: #c47f0a;
+    --amber-dim: rgba(196,127,10,0.09);
+    --green: #0f8c5a;
+    --green-dim: rgba(15,140,90,0.09);
+    --purple: #6b45d4;
+    --purple-dim: rgba(107,69,212,0.09);
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  /* --- NAV --- */
+  .topnav {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 48px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    margin-right: 32px;
+  }
+  .logo-mark {
+    width: 26px; height: 26px;
+    background: var(--accent);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: #fff;
+  }
+  .screen-tabs {
+    display: flex;
+    gap: 2px;
+    margin-left: auto;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 3px;
+  }
+  .screen-tab {
+    padding: 5px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all .15s;
+    border: none;
+    background: none;
+  }
+  .screen-tab.active {
+    background: var(--surface3);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0,0,0,.4);
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 24px;
+  }
+  .badge-pill {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+  }
+  .badge-pill.red { background: #fdeaea; color: #b91c1c; border: 1px solid rgba(185,28,28,.18); }
+  .badge-pill.amber { background: #fef3cd; color: #92600a; border: 1px solid rgba(146,96,10,.18); }
+  .badge-pill.green { background: #dcf5eb; color: #0a6640; border: 1px solid rgba(10,102,64,.18); }
+  .badge-pill.blue { background: #e8effe; color: #2850c9; border: 1px solid rgba(40,80,201,.18); }
+  .badge-pill.purple { background: #efe9fd; color: #5430b5; border: 1px solid rgba(84,48,181,.18); }
+  .badge-pill.neutral { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); }
+  .avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    border: 1px solid rgba(59,110,245,.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600; color: var(--accent);
+  }
+
+  /* --- SCREENS --- */
+  .screen { display: none; }
+  .screen.active { display: flex; }
+
+  /* --- SIDEBAR --- */
+  .sidebar {
+    width: 200px;
+    min-height: calc(100vh - 48px);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 16px 0;
+    flex-shrink: 0;
+  }
+  .sidebar-section {
+    padding: 0 12px;
+    margin-bottom: 20px;
+  }
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 0 8px;
+    margin-bottom: 4px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 8px;
+    border-radius: var(--radius);
+    font-size: 12px;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all .12s;
+    position: relative;
+  }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: var(--accent-dim); color: var(--accent); font-weight: 500; }
+  .nav-item .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .nav-icon { width: 14px; height: 14px; opacity: .7; }
+  .sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 8px 12px; }
+
+  /* --- MAIN --- */
+  .main {
+    flex: 1;
+    padding: 20px 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: calc(100vh - 48px);
+  }
+
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .page-title { font-size: 18px; font-weight: 600; letter-spacing: -.3px; }
+  .page-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  /* --- CARDS --- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+    transition: border-color .15s;
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  }
+  .card:hover { border-color: var(--border2); box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+  .card.accent-red { border-left: 3px solid var(--red); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+  .card.accent-amber { border-left: 3px solid var(--amber); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+  .card.accent-green { border-left: 3px solid var(--green); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+  .card.accent-purple { border-left: 3px solid var(--purple); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+
+  /* --- METRIC CARDS --- */
+  .metrics-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px 18px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  }
+  .metric-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; font-weight: 500; }
+  .metric-value { font-size: 30px; font-weight: 700; letter-spacing: -1px; font-family: 'DM Mono', monospace; line-height: 1; }
+  .metric-sub { font-size: 11px; color: var(--text2); margin-top: 6px; }
+
+  /* --- SPARKLINE --- */
+  .sparkline {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 24px;
+    margin: 6px 0 4px;
+  }
+  .spark-bar {
+    flex: 1;
+    border-radius: 2px;
+    transition: opacity .2s;
+  }
+
+  /* --- AGENT FLEET --- */
+  .fleet-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .agent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all .15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .agent-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--green);
+  }
+  .agent-card.critical::before { background: #d93a3a; }
+  .agent-card.warning::before { background: #d97706; }
+  .agent-card:hover { border-color: var(--border2); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+  .agent-name { font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+  .agent-health { font-size: 20px; font-weight: 700; font-family: 'DM Mono', monospace; }
+  .agent-status { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+  /* --- PRIORITY LIST --- */
+  .priority-list { display: flex; flex-direction: column; gap: 8px; }
+  .priority-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all .15s;
+  }
+  .priority-item:hover { border-color: var(--border2); }
+  .priority-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+  }
+  .priority-body {
+    display: none;
+    padding: 0 16px 14px;
+    border-top: 1px solid var(--border);
+  }
+  .priority-body.open { display: block; }
+
+  /* --- DATA TABLE --- */
+  .data-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    margin: 10px 0;
+  }
+  .data-cell label { font-size: 10px; color: var(--text3); display: block; margin-bottom: 2px; letter-spacing: .04em; }
+  .data-cell span { font-size: 12px; font-weight: 500; font-family: 'DM Mono', monospace; }
+  .data-cell span.conflict { color: var(--red); }
+
+  /* --- BUTTONS --- */
+  .btn-row { display: flex; gap: 6px; margin-top: 12px; }
+  .btn {
+    padding: 7px 14px;
+    border-radius: var(--radius);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all .12s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #3d6aee; }
+  .btn-danger { background: var(--red-dim); color: var(--red); border: 1px solid rgba(240,90,90,.25); }
+  .btn-danger:hover { background: rgba(240,90,90,.2); }
+  .btn-ghost { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); }
+  .btn-ghost:hover { color: var(--text); }
+  .btn-approve { background: var(--green-dim); color: var(--green); border: 1px solid rgba(62,207,142,.25); }
+  .btn-approve:hover { background: rgba(62,207,142,.2); }
+
+  /* --- LEGAL REVIEW PANEL --- */
+  .legal-panel {
+    background: var(--purple-dim);
+    border: 1px solid rgba(167,139,250,.2);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    margin: 8px 0;
+  }
+  .legal-panel-header { font-size: 11px; font-weight: 500; color: var(--purple); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+
+  /* --- WARNING BOX --- */
+  .warn-box {
+    background: var(--amber-dim);
+    border: 1px solid rgba(240,168,64,.2);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    font-size: 12px;
+    color: var(--amber);
+    margin: 8px 0;
+  }
+
+  /* --- OUTCOME FEED --- */
+  .outcome-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .outcome-item:last-child { border-bottom: none; }
+
+  /* --- NOTIFICATION TOAST --- */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-lg);
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--text);
+    max-width: 280px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all .3s;
+    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast-title { font-weight: 500; margin-bottom: 2px; color: var(--green); }
+
+  /* --- UTILS --- */
+  .flex { display: flex; }
+  .flex-col { flex-direction: column; }
+  .items-center { align-items: center; }
+  .items-start { align-items: flex-start; }
+  .justify-between { justify-content: space-between; }
+  .gap-6 { gap: 6px; }
+  .gap-8 { gap: 8px; }
+  .gap-10 { gap: 10px; }
+  .gap-12 { gap: 12px; }
+  .mt-4 { margin-top: 4px; }
+  .mt-8 { margin-top: 8px; }
+  .text-sm { font-size: 12px; }
+  .text-xs { font-size: 11px; }
+  .text-2 { color: var(--text2); }
+  .text-red { color: var(--red); }
+  .text-amber { color: var(--amber); }
+  .text-green { color: var(--green); }
+  .text-purple { color: var(--purple); }
+  .font-mono { font-family: 'DM Mono', monospace; }
+  .font-500 { font-weight: 500; }
+  .flex-1 { flex: 1; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+
+  /* SLA timer */
+  .sla-bar { height: 3px; background: var(--surface3); border-radius: 2px; margin-top: 4px; overflow: hidden; }
+  .sla-fill { height: 100%; border-radius: 2px; transition: width .3s; }
+
+  /* Tabs inside screen */
+  .inner-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+  .inner-tab {
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all .12s;
+  }
+  .inner-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* Role filter */
+  .filter-row { display: flex; align-items: center; gap: 8px; }
+  .filter-btn {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    border: 1px solid var(--border2);
+    background: none;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all .12s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filter-btn.active { background: var(--accent-dim); color: var(--accent); border-color: rgba(79,124,255,.3); }
+
+  /* Impact score pill */
+  .impact-score {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--surface3);
+    color: var(--text2);
+    white-space: nowrap;
+  }
+
+  /* Annotation chip */
+  .ann {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  /* scroll */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="logo">
+    <div class="logo-mark">N</div>
+    Nexus
+  </div>
+  <div class="screen-tabs">
+    <button class="screen-tab active" onclick="switchScreen('s1', this)">Screen 1 — CAO Console</button>
+    <button class="screen-tab" onclick="switchScreen('s2', this)">Screen 2 — Manager Workspace</button>
+  </div>
+  <div class="nav-right">
+    <span class="badge-pill red">3 critical</span>
+    <span class="badge-pill amber">SLA 42m</span>
+    <div class="avatar">CA</div>
+  </div>
+</nav>
+
+<!-- ============================================================ -->
+<!-- SCREEN 1 — CAO SUPERVISORY CONSOLE -->
+<!-- ============================================================ -->
+<div id="s1" class="screen active">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Workspace</div>
+      <div class="nav-item active">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="currentColor" opacity=".8"/><rect x="8" y="1" width="5" height="5" rx="1" fill="currentColor" opacity=".8"/><rect x="1" y="8" width="5" height="5" rx="1" fill="currentColor" opacity=".8"/><rect x="8" y="8" width="5" height="5" rx="1" fill="currentColor" opacity=".8"/></svg>
+        AI Hub
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4" r="2.5" stroke="currentColor"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="currentColor" stroke-linecap="round"/></svg>
+        AI Team
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="8" rx="1" stroke="currentColor"/><path d="M4 3V2M7 3V2M10 3V2" stroke="currentColor" stroke-linecap="round"/></svg>
+        Scheduler
+      </div>
+    </div>
+    <hr class="sidebar-divider">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Review</div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><path d="M2 4h10M2 7h7M2 10h5" stroke="currentColor" stroke-linecap="round"/></svg>
+        Approvals
+        <div class="dot"></div>
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-linecap="round"/></svg>
+        Legal & Policy
+        <div class="dot" style="background:var(--purple)"></div>
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-linecap="round"/></svg>
+        Audit Log
+      </div>
+    </div>
+    <hr class="sidebar-divider">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Data</div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><ellipse cx="7" cy="4" rx="5" ry="2" stroke="currentColor"/><path d="M2 7c0 1.1 2.24 2 5 2s5-.9 5-2M2 10c0 1.1 2.24 2 5 2s5-.9 5-2" stroke="currentColor"/><path d="M2 4v6M12 4v6" stroke="currentColor"/></svg>
+        Data Management
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <div>
+        <div class="page-title">AI Hub — CAO Console</div>
+        <div class="page-sub">Real estate fund client · Live stream · Last updated just now</div>
+      </div>
+      <div class="flex gap-8 items-center">
+        <button class="btn btn-ghost" style="font-size:11px;">Export report</button>
+        <button class="btn btn-primary" style="font-size:11px;">Direct Chat → CAO</button>
+      </div>
+    </div>
+
+    <!-- METRICS ROW -->
+    <div>
+      <div class="section-label">Fleet overview <span class="ann" style="margin-left:4px;">A</span></div>
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-label">Active agents</div>
+          <div class="metric-value" style="color:var(--green);">4</div>
+          <div class="metric-sub"><span class="badge-pill green">All online</span></div>
+        </div>
+        <div class="metric-card" style="border-color:rgba(240,90,90,.25);background:rgba(240,90,90,.04);">
+          <div class="metric-label">Blocking approvals</div>
+          <div class="metric-value" style="color:var(--red);">3</div>
+          <div class="metric-sub"><span class="badge-pill red">Agent-critical</span></div>
+        </div>
+        <div class="metric-card" style="border-color:rgba(240,168,64,.25);background:rgba(240,168,64,.04);">
+          <div class="metric-label">Pending routine</div>
+          <div class="metric-value" style="color:var(--amber);">83</div>
+          <div class="metric-sub" style="color:var(--amber);font-size:11px;">SLA expires 3h 20m</div>
+          <div class="sla-bar"><div class="sla-fill" style="width:72%;background:var(--amber);"></div></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Auto-resolved today</div>
+          <div class="metric-value">47</div>
+          <div class="metric-sub">No human needed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRIORITY INTERVENTIONS + LEGAL PANEL -->
+    <div class="two-col" style="align-items:start;">
+      <div>
+        <div class="section-label">Priority interventions — ranked by impact <span class="ann" style="margin-left:4px;">B</span></div>
+        <div class="priority-list">
+
+          <!-- Item 1 — Critical -->
+          <div class="priority-item" style="border-left:3px solid var(--red);border-radius:0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="priority-header" onclick="togglePriority(this)">
+              <span class="badge-pill red">Critical</span>
+              <span class="impact-score">Impact 98</span>
+              <div class="flex-1">
+                <div class="font-500" style="font-size:12px;">AI Asset Operator — Step 5 blocked</div>
+                <div class="text-xs text-2">Lease data sign-off · Stale 4h 12m · FM unread</div>
+              </div>
+              <div class="flex gap-6">
+                <button class="btn btn-ghost" style="font-size:10px;padding:4px 8px;" onclick="event.stopPropagation();showToast('Reassigned to Fund Manager')">Re-assign</button>
+                <button class="btn btn-danger" style="font-size:10px;padding:4px 8px;" onclick="event.stopPropagation();showToast('Escalated to CAO direct queue')">Escalate</button>
+              </div>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color:var(--text3);flex-shrink:0;"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="priority-body open">
+              <div class="text-xs text-2" style="margin-bottom:8px;">Resolving this restores agent health from 6% and unblocks 14 downstream workflows.</div>
+              <div class="data-row">
+                <div class="data-cell"><label>Field</label><span>Rent escalation clause</span></div>
+                <div class="data-cell"><label>Extracted value</label><span class="conflict">8.5% p.a.</span></div>
+                <div class="data-cell"><label>Policy max</label><span>5.0% p.a.</span></div>
+              </div>
+              <div class="legal-panel">
+                <div class="legal-panel-header">⚖ Legal & Policy flag</div>
+                <div class="text-xs" style="color:var(--text2);">Clause exceeds fund policy threshold by 3.5%. Requires CAO sign-off before upload. Flagged for legal review post-approval.</div>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-approve" onclick="showToast('Approved & flagged for legal review')">Approve & flag legal</button>
+                <button class="btn btn-danger" onclick="showToast('Rejected — data team notified to re-extract')">Reject — re-extract</button>
+                <button class="btn btn-ghost" style="margin-left:auto;" onclick="showToast('Comment added')">Add note</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2 — High -->
+          <div class="priority-item" style="border-left:3px solid var(--amber);border-radius:0 var(--radius-lg) var(--radius-lg) 0;opacity:.9;">
+            <div class="priority-header" onclick="togglePriority(this)">
+              <span class="badge-pill amber">High</span>
+              <span class="impact-score">Impact 61</span>
+              <div class="flex-1">
+                <div class="font-500" style="font-size:12px;">AI Asset Manager — NAV threshold exception</div>
+                <div class="text-xs text-2">Fund NAV variance 3.2% vs policy 2% · SLA 42m</div>
+              </div>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color:var(--text3);flex-shrink:0;"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="priority-body">
+              <div class="warn-box">NAV variance exceeds policy tolerance. CAO approval required before fund report is submitted to investors.</div>
+              <div class="legal-panel">
+                <div class="legal-panel-header">⚖ Policy check</div>
+                <div class="text-xs" style="color:var(--text2);">Investor reporting policy §4.2 limits NAV variance to 2.0%. This submission is at 3.2% — override requires CAO sign-off and explanation note.</div>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-approve" onclick="showToast('NAV override approved with note')">Approve with note</button>
+                <button class="btn btn-danger" onclick="showToast('Returned for recalculation')">Return for review</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3 — Routine -->
+          <div class="priority-item" style="opacity:.7;">
+            <div class="priority-header" onclick="togglePriority(this)">
+              <span class="badge-pill neutral">Routine</span>
+              <span class="impact-score">83 items</span>
+              <div class="flex-1">
+                <div class="font-500" style="font-size:12px;">Bulk queue — document checks</div>
+                <div class="text-xs text-2">Auto-escalation scheduled · 41 already cleared</div>
+              </div>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color:var(--text3);flex-shrink:0;"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="priority-body">
+              <div class="text-xs text-2">These items are schema-valid and will auto-resolve. No action required from CAO. Escalation will fire if unresolved after SLA window.</div>
+              <div class="btn-row">
+                <button class="btn btn-ghost" onclick="showToast('All routine items queued for auto-resolve')">Auto-resolve all</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Legal & Policy Summary Panel -->
+      <div>
+        <div class="section-label">Legal & policy review queue <span class="ann" style="margin-left:4px;">C</span></div>
+        <div class="card" style="margin-bottom:10px;">
+          <div class="flex items-center justify-between" style="margin-bottom:10px;">
+            <div class="font-500" style="font-size:12px;">Policy exceptions today</div>
+            <span class="badge-pill purple">2 open</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="card" style="padding:10px 12px;background:var(--surface2);">
+              <div class="flex items-center justify-between gap-8">
+                <div>
+                  <div class="text-xs font-500">Rent escalation — Unit 14, Raffles 3</div>
+                  <div class="text-xs text-2 mt-4">Exceeds 5% policy cap · Needs CAO + legal</div>
+                </div>
+                <span class="badge-pill red">Urgent</span>
+              </div>
+            </div>
+            <div class="card" style="padding:10px 12px;background:var(--surface2);">
+              <div class="flex items-center justify-between gap-8">
+                <div>
+                  <div class="text-xs font-500">NAV variance override — Fund IV Q1</div>
+                  <div class="text-xs text-2 mt-4">§4.2 investor reporting threshold</div>
+                </div>
+                <span class="badge-pill amber">Review</span>
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="text-xs text-2">Cleared this week: <span style="color:var(--green);">7 policy items</span> · Avg resolution 18m</div>
+        </div>
+
+        <div class="section-label">Audit trail <span class="ann" style="margin-left:4px;">D</span></div>
+        <div class="card">
+          <div style="display:flex;flex-direction:column;gap:0;">
+            <div class="outcome-item">
+              <div>
+                <div class="text-xs font-500">NAV upload approved — Fund III</div>
+                <div class="text-xs text-2">CAO approved · Agent resumed in 2m</div>
+              </div>
+              <span class="badge-pill green">Done</span>
+            </div>
+            <div class="outcome-item">
+              <div>
+                <div class="text-xs font-500">Lease formatting — 12 docs</div>
+                <div class="text-xs text-2">Auto-resolved · No human action</div>
+              </div>
+              <span class="badge-pill blue">Auto</span>
+            </div>
+            <div class="outcome-item">
+              <div>
+                <div class="text-xs font-500">Tenant data completeness</div>
+                <div class="text-xs text-2">Returned for re-extraction</div>
+              </div>
+              <span class="badge-pill amber">Returned</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AGENT FLEET -->
+    <div>
+      <div class="section-label">AI employee fleet <span class="ann" style="margin-left:4px;">E</span></div>
+      <div class="fleet-grid">
+        <div class="agent-card critical">
+          <div class="flex justify-between items-center">
+            <div class="agent-name">AI Asset Operator</div>
+            <span class="badge-pill red">6%</span>
+          </div>
+          <div class="sparkline">
+            <div class="spark-bar" style="height:90%;background:var(--green);opacity:.6;"></div>
+            <div class="spark-bar" style="height:75%;background:var(--green);opacity:.6;"></div>
+            <div class="spark-bar" style="height:50%;background:var(--amber);"></div>
+            <div class="spark-bar" style="height:25%;background:var(--red);"></div>
+            <div class="spark-bar" style="height:12%;background:var(--red);"></div>
+          </div>
+          <div class="agent-status text-red">Blocked · Step 5 · 4h 12m</div>
+          <div class="agent-status text-xs" style="color:var(--text3);margin-top:2px;">Property Ops · Lease & Tenant</div>
+        </div>
+        <div class="agent-card warning">
+          <div class="flex justify-between items-center">
+            <div class="agent-name">AI Asset Manager</div>
+            <span class="badge-pill amber">100%</span>
+          </div>
+          <div class="sparkline">
+            <div class="spark-bar" style="height:90%;background:var(--green);opacity:.6;"></div>
+            <div class="spark-bar" style="height:88%;background:var(--green);opacity:.6;"></div>
+            <div class="spark-bar" style="height:78%;background:var(--green);opacity:.6;"></div>
+            <div class="spark-bar" style="height:65%;background:var(--amber);"></div>
+            <div class="spark-bar" style="height:60%;background:var(--amber);"></div>
+          </div>
+          <div class="agent-status text-amber">SLA risk rising · NAV pending</div>
+          <div class="agent-status text-xs" style="color:var(--text3);margin-top:2px;">Asset Mgmt · Fund Doc Upload</div>
+        </div>
+        <div class="agent-card">
+          <div class="flex justify-between items-center">
+            <div class="agent-name">AI Accountant</div>
+            <span class="badge-pill green">100%</span>
+          </div>
+          <div class="sparkline">
+            <div class="spark-bar" style="height:90%;background:var(--green);opacity:.7;"></div>
+            <div class="spark-bar" style="height:88%;background:var(--green);opacity:.7;"></div>
+            <div class="spark-bar" style="height:92%;background:var(--green);opacity:.7;"></div>
+            <div class="spark-bar" style="height:89%;background:var(--green);opacity:.7;"></div>
+            <div class="spark-bar" style="height:91%;background:var(--green);opacity:.7;"></div>
+          </div>
+          <div class="agent-status" style="color:var(--green);">Running · 0 queued</div>
+          <div class="agent-status text-xs" style="color:var(--text3);margin-top:2px;">Accounting · Source Doc Upload</div>
+        </div>
+        <div class="agent-card">
+          <div class="flex justify-between items-center">
+            <div class="agent-name">AI Asset</div>
+            <span class="badge-pill green">100%</span>
+          </div>
+          <div class="sparkline">
+            <div class="spark-bar" style="height:91%;background:var(--green);opacity:.7;"></div>
+            <div class="spark-bar" style="height:89%;background:var(--green);opacity:.7;"></div>
+            <div class="spark-bar" style="height:93%;background:var(--green);opacity:.7;"></div>
+            <div class="spark-bar" style="height:90%;background:var(--green);opacity:.7;"></div>
+            <div class="spark-bar" style="height:92%;background:var(--green);opacity:.7;"></div>
+          </div>
+          <div class="agent-status" style="color:var(--green);">Running · 0 queued</div>
+          <div class="agent-status text-xs" style="color:var(--text3);margin-top:2px;">Asset Ops · Lease Agreements</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /s1 -->
+
+
+<!-- ============================================================ -->
+<!-- SCREEN 2 — MANAGER WORKSPACE (general, not only FM) -->
+<!-- ============================================================ -->
+<div id="s2" class="screen">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">My workspace</div>
+      <div class="nav-item active">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><path d="M2 4h10M2 7h7M2 10h5" stroke="currentColor" stroke-linecap="round"/></svg>
+        My Approvals
+        <div class="dot"></div>
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-linecap="round"/></svg>
+        Activity Feed
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor"/><path d="M5 7h4M7 5v4" stroke="currentColor" stroke-linecap="round"/></svg>
+        Assigned to me
+      </div>
+    </div>
+    <hr class="sidebar-divider">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Role view</div>
+      <div class="nav-item" onclick="switchRole('fm', this)">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4" r="2.5" stroke="currentColor"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="currentColor" stroke-linecap="round"/></svg>
+        Fund Manager
+      </div>
+      <div class="nav-item" onclick="switchRole('pm', this)">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4" r="2.5" stroke="currentColor"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="currentColor" stroke-linecap="round"/></svg>
+        Portfolio Manager
+      </div>
+      <div class="nav-item" onclick="switchRole('ops', this)">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4" r="2.5" stroke="currentColor"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="currentColor" stroke-linecap="round"/></svg>
+        Operations Lead
+      </div>
+      <div class="nav-item" onclick="switchRole('legal', this)">
+        <svg class="nav-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4" r="2.5" stroke="currentColor"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="currentColor" stroke-linecap="round"/></svg>
+        Legal Counsel
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <div>
+        <div class="page-title" id="s2-title">Manager Workspace</div>
+        <div class="page-sub" id="s2-sub">Showing all roles · 2 decisions require your input today</div>
+      </div>
+      <div class="filter-row">
+        <span style="font-size:11px;color:var(--text2);">Filter by role:</span>
+        <button class="filter-btn active" onclick="filterRole('all', this)">All</button>
+        <button class="filter-btn" onclick="filterRole('fm', this)">Fund Manager</button>
+        <button class="filter-btn" onclick="filterRole('pm', this)">Portfolio Mgr</button>
+        <button class="filter-btn" onclick="filterRole('ops', this)">Ops Lead</button>
+        <button class="filter-btn" onclick="filterRole('legal', this)">Legal</button>
+      </div>
+    </div>
+
+    <!-- Day summary strip -->
+    <div class="card" style="background:var(--surface2);">
+      <div class="three-col">
+        <div>
+          <div class="text-xs text-2">Decisions needed today</div>
+          <div style="font-size:20px;font-weight:600;font-family:'DM Mono',monospace;color:var(--red);margin-top:2px;">2</div>
+        </div>
+        <div>
+          <div class="text-xs text-2">Avg time to decide</div>
+          <div style="font-size:20px;font-weight:600;font-family:'DM Mono',monospace;margin-top:2px;">48s</div>
+        </div>
+        <div>
+          <div class="text-xs text-2">Auto-handled (no action needed)</div>
+          <div style="font-size:20px;font-weight:600;font-family:'DM Mono',monospace;color:var(--green);margin-top:2px;">41</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REQUIRES DECISION -->
+    <div>
+      <div class="section-label">Requires your decision <span class="ann" style="margin-left:4px;">F</span></div>
+
+      <!-- Card 1 — FM + Legal -->
+      <div class="card accent-red" style="margin-bottom:10px;" data-role="fm legal">
+        <div class="flex items-center gap-8" style="margin-bottom:8px;">
+          <span class="badge-pill red">Critical — agent blocked</span>
+          <span class="badge-pill purple">Legal flag</span>
+          <span class="badge-pill neutral">Fund Manager + Legal</span>
+          <span style="font-size:11px;color:var(--text2);margin-left:auto;">Stale 4h 12m · Escalated by CAO</span>
+        </div>
+        <div class="font-500" style="margin-bottom:4px;">Lease data completeness — Raffles 3 Galangal Dajelu, Unit 14</div>
+        <div class="text-xs text-2" style="margin-bottom:10px;">The AI Asset Operator completed data extraction but found a clause that exceeds policy. It cannot validate or upload until you confirm the correct value and legal acknowledges the exception.</div>
+        <div class="data-row">
+          <div class="data-cell"><label>Field in question</label><span>Rent escalation clause</span></div>
+          <div class="data-cell"><label>Extracted value</label><span class="conflict">8.5% per annum</span></div>
+          <div class="data-cell"><label>Policy maximum</label><span>5.0% per annum</span></div>
+        </div>
+        <div class="legal-panel">
+          <div class="legal-panel-header">⚖ Legal review required</div>
+          <div class="text-xs" style="color:var(--text2);">This clause exceeds the fund's lease policy cap by 3.5%. Approval will trigger a legal review task. Rejecting pauses the upload and notifies the data team to re-extract.</div>
+        </div>
+        <div class="warn-box">Approving proceeds with extracted value and flags for legal review. Rejecting pauses upload and notifies the data team.</div>
+        <div class="btn-row">
+          <button class="btn btn-approve" onclick="showToast('Approved — flagged for legal review. Agent resuming.')">Approve & flag for legal</button>
+          <button class="btn btn-danger" onclick="showToast('Rejected — data team notified to re-extract')">Reject — re-extract</button>
+          <button class="btn btn-ghost" style="margin-left:auto;" onclick="showToast('Comment saved')">Add comment</button>
+        </div>
+      </div>
+
+      <!-- Card 2 — Portfolio Manager -->
+      <div class="card accent-amber" data-role="pm">
+        <div class="flex items-center gap-8" style="margin-bottom:8px;">
+          <span class="badge-pill amber">High priority</span>
+          <span class="badge-pill neutral">Portfolio Manager</span>
+          <span style="font-size:11px;color:var(--text2);margin-left:auto;">SLA expires in 42 min</span>
+        </div>
+        <div class="font-500" style="margin-bottom:4px;">NAV upload — Fund IV Q1 · Threshold exception</div>
+        <div class="text-xs text-2" style="margin-bottom:10px;">The AI Asset Manager calculated a NAV variance of 3.2%, exceeding the 2% policy tolerance. Portfolio Manager sign-off is required before the report is submitted to investors.</div>
+        <div class="data-row">
+          <div class="data-cell"><label>Fund</label><span>Fund IV — Q1 2025</span></div>
+          <div class="data-cell"><label>NAV variance</label><span class="conflict">3.2%</span></div>
+          <div class="data-cell"><label>Policy tolerance</label><span>2.0%</span></div>
+        </div>
+        <div class="warn-box">Approving submits the investor report with an override note. Returning sends it back to the AI Asset Manager for recalculation.</div>
+        <div class="btn-row">
+          <button class="btn btn-approve" onclick="showToast('NAV override approved with note. Report queued for submission.')">Approve with note</button>
+          <button class="btn btn-danger" onclick="showToast('Returned for recalculation')">Return for review</button>
+          <button class="btn btn-ghost" style="margin-left:auto;">Add comment</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTCOME FEED -->
+    <div>
+      <div class="section-label">Completed today — outcome feed <span class="ann" style="margin-left:4px;">G</span></div>
+      <div class="card">
+        <div class="inner-tabs">
+          <div class="inner-tab active" onclick="switchTab(this, 'tab-all')">All</div>
+          <div class="inner-tab" onclick="switchTab(this, 'tab-approved')">Approved by you</div>
+          <div class="inner-tab" onclick="switchTab(this, 'tab-auto')">Auto-resolved</div>
+        </div>
+        <div id="tab-all">
+          <div class="outcome-item">
+            <div>
+              <div class="text-xs font-500">NAV upload — Fund III Q4</div>
+              <div class="text-xs text-2">You approved · AI Asset Manager resumed · Completed in 3m</div>
+            </div>
+            <span class="badge-pill green">Done</span>
+          </div>
+          <div class="outcome-item">
+            <div>
+              <div class="text-xs font-500">Lease formatting — 12 documents</div>
+              <div class="text-xs text-2">Auto-resolved · Schema valid · No action needed</div>
+            </div>
+            <span class="badge-pill blue">Auto</span>
+          </div>
+          <div class="outcome-item">
+            <div>
+              <div class="text-xs font-500">Tenant data upload — Bldg C, floors 4–6</div>
+              <div class="text-xs text-2">Auto-resolved · Completeness check passed</div>
+            </div>
+            <span class="badge-pill blue">Auto</span>
+          </div>
+          <div class="outcome-item">
+            <div>
+              <div class="text-xs font-500">Operations doc sign-off — Q1 bundle</div>
+              <div class="text-xs text-2">Ops Lead approved · Delivered to archive</div>
+            </div>
+            <span class="badge-pill green">Done</span>
+          </div>
+        </div>
+        <div id="tab-approved" style="display:none;">
+          <div class="outcome-item">
+            <div>
+              <div class="text-xs font-500">NAV upload — Fund III Q4</div>
+              <div class="text-xs text-2">You approved · AI Asset Manager resumed · Completed in 3m</div>
+            </div>
+            <span class="badge-pill green">Done</span>
+          </div>
+        </div>
+        <div id="tab-auto" style="display:none;">
+          <div class="outcome-item">
+            <div>
+              <div class="text-xs font-500">Lease formatting — 12 documents</div>
+              <div class="text-xs text-2">Auto-resolved · Schema valid</div>
+            </div>
+            <span class="badge-pill blue">Auto</span>
+          </div>
+          <div class="outcome-item">
+            <div>
+              <div class="text-xs font-500">Tenant data upload — Bldg C, floors 4–6</div>
+              <div class="text-xs text-2">Auto-resolved · Completeness check passed</div>
+            </div>
+            <span class="badge-pill blue">Auto</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /s2 -->
+
+<!-- ANNOTATIONS FOOTER -->
+<div style="background:var(--surface);border-top:1px solid var(--border);padding:16px 24px;">
+  <div style="font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;">Annotation key — changes from previous wireframe</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+    <div style="display:flex;gap:8px;align-items:flex-start;">
+      <span class="ann">A</span>
+      <span style="font-size:11px;color:var(--text2);">Fleet metrics split into 4 distinct counters with SLA progress bar</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:flex-start;">
+      <span class="ann">B</span>
+      <span style="font-size:11px;color:var(--text2);">Priority list ranked by impact score — expandable with inline action</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:flex-start;">
+      <span class="ann">C</span>
+      <span style="font-size:11px;color:var(--text2);"><strong style="color:var(--purple);">New:</strong> Legal & policy review queue for CAO — addresses feedback #1</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:flex-start;">
+      <span class="ann">D</span>
+      <span style="font-size:11px;color:var(--text2);">Audit trail panel shows CAO decisions and auto-resolved items</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:flex-start;">
+      <span class="ann">E</span>
+      <span style="font-size:11px;color:var(--text2);">Agent fleet sparklines show health trend, not just snapshot</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:flex-start;">
+      <span class="ann">F</span>
+      <span style="font-size:11px;color:var(--text2);"><strong style="color:var(--purple);">New:</strong> Multi-role approval cards — FM, Portfolio Mgr, Ops, Legal (feedback #2)</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:flex-start;">
+      <span class="ann">G</span>
+      <span style="font-size:11px;color:var(--text2);">Outcome feed with tabbed view — all / approved by you / auto-resolved</span>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-title" id="toast-title">✓ Action completed</div>
+  <div id="toast-body" style="font-size:11px;color:var(--text2);margin-top:2px;"></div>
+</div>
+
+<script>
+function switchScreen(id, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function togglePriority(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+  const arrow = header.querySelector('svg:last-child');
+  if (body.classList.contains('open')) {
+    arrow.style.transform = 'rotate(180deg)';
+  } else {
+    arrow.style.transform = 'rotate(0deg)';
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-body').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function switchTab(tab, targetId) {
+  document.querySelectorAll('.inner-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  ['tab-all','tab-approved','tab-auto'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = id === targetId ? 'block' : 'none';
+  });
+}
+
+function filterRole(role, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('[data-role]').forEach(card => {
+    if (role === 'all' || card.dataset.role.includes(role)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+function switchRole(role, item) {
+  document.querySelectorAll('.sidebar .nav-item').forEach(n => n.classList.remove('active'));
+  item.classList.add('active');
+  const titles = {fm:'Fund Manager Workspace', pm:'Portfolio Manager Workspace', ops:'Operations Lead Workspace', legal:'Legal Counsel Workspace'};
+  const subs = {fm:'Showing Fund Manager tasks · 1 decision requires your input', pm:'Showing Portfolio Manager tasks · 1 NAV exception requires sign-off', ops:'Showing Operations tasks · 0 decisions pending', legal:'Showing Legal tasks · 1 policy flag requires acknowledgement'};
+  document.getElementById('s2-title').textContent = titles[role] || 'Manager Workspace';
+  document.getElementById('s2-sub').textContent = subs[role] || '';
+}
+</script>
+</body>
+</html>
